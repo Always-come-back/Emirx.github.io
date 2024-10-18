@@ -5,12 +5,19 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: black; /* Arka plan siyah */
+    background-color: black;
+    overflow-y: hidden;
 }
 
 #pdf-app {
     text-align: center;
     color: white;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 #upload-section {
@@ -39,19 +46,20 @@ body {
 }
 
 #pdf-container {
-    margin: 20px auto;
-    max-width: 800px;
+    flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-y: scroll;
 }
 
 canvas {
     width: 100%;
+    max-height: 100vh;
     border: 1px solid #ccc;
 }
 
-#fullscreen-btn {
+#fullscreen-btn, #exit-fullscreen-btn {
     position: absolute;
     bottom: 20px;
     right: 20px;
@@ -60,26 +68,50 @@ canvas {
     border: none;
     padding: 10px;
     cursor: pointer;
+    z-index: 10;
+}
+
+#fullscreen-btn img {
+    width: 30px;
+    height: 30px;
 }
 
 #navigation {
-    margin-top: 10px;
+    background-color: white;
+    color: black;
+    padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
-#prev-page, #next-page {
+.nav-btn {
     background-color: white;
     color: black;
     border: none;
     padding: 10px;
     cursor: pointer;
     font-size: 24px;
+    margin: 0 10px;
 }
 
 #page-num-display {
-    margin: 0 20px;
     font-size: 18px;
-    color: white;
+}
+
+#controls {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+#pen-btn, #eraser-btn {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    padding: 5px 15px;
+    cursor: pointer;
+    margin: 0 5px;
 }
