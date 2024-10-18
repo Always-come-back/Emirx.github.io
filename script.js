@@ -8,10 +8,13 @@ const scale = 1.5,
       ctx = canvas.getContext('2d'),
       fileInput = document.getElementById('file-input'),
       uploadBtn = document.getElementById('upload-btn'),
-      uploadSection = document.getElementById('upload-section'),
+      loadingMessage = document.getElementById('loading-message'),
+      progressMessage = document.getElementById('progress-message'),
+      progressPercent = document.getElementById('progress-percent'),
+      fileSizeMessage = document.getElementById('file-size-message'),
+      fileSizeSpan = document.getElementById('file-size'),
       pdfContainer = document.getElementById('pdf-container'),
-      navigation = document.getElementById('navigation'),
-      loadingMessage = document.getElementById('loading-message');
+      navigation = document.getElementById('navigation');
 
 // Sayfayı render et
 const renderPage = num => {
@@ -40,12 +43,26 @@ const renderPage = num => {
     });
 };
 
-// PDF dosyasını yükle
+// Dosya seçildiğinde yükleme işlemini başlat
 fileInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file && file.type === 'application/pdf') {
-        loadingMessage.style.display = 'block';  // "Yükleniyor..." göster
+        // Dosya boyutunu göster
+        fileSizeSpan.textContent = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+        fileSizeMessage.style.display = 'block';
+
+        // Yükleniyor mesajını göster
+        loadingMessage.style.display = 'block';
+        progressMessage.style.display = 'block';
+
         const fileReader = new FileReader();
+
+        fileReader.onprogress = function(event) {
+            if (event.lengthComputable) {
+                const percentLoaded = Math.round((event.loaded / event.total) * 100);
+                progressPercent.textContent = percentLoaded + '%';
+            }
+        };
 
         fileReader.onload = function() {
             const typedarray = new Uint8Array(this.result);
@@ -55,7 +72,9 @@ fileInput.addEventListener('change', (e) => {
                 document.getElementById('page-count').textContent = pdfDoc.numPages;
                 renderPage(pageNum);
 
-                loadingMessage.style.display = 'none'; // "Yükleniyor..." gizle
+                // Yükleme işlemi tamamlandı
+                loadingMessage.style.display = 'none';
+                progressMessage.style.display = 'none';
                 pdfContainer.style.display = 'block';
                 navigation.style.display = 'flex';
             });
