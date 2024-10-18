@@ -1,1 +1,30 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitap Formatında PDF Görüntüleyici</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="pdf-container">
+        <canvas id="pdf-render"></canvas>
+    </div>
+
+    <div class="toolbar">
+        <button id="prev-page">Önceki Sayfa</button>
+        <button id="next-page">Sonraki Sayfa</button>
+        <span>Sayfa: <span id="page-num"></span> / <span id="page-count"></span></span>
+    </div>
+
+    <div class="tools">
+        <button id="pen">Kalem</button>
+        <button id="eraser">Silgi</button>
+        <button id="clear-all">Hepsini Sil</button>
+    </div>
+
+    <script src="pdf.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
 
