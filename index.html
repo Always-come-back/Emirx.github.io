@@ -22,14 +22,21 @@
         <!-- PDF ve Tam Ekran Butonu -->
         <div id="pdf-container" style="display: none;">
             <canvas id="pdf-render"></canvas>
-            <button id="fullscreen-btn">Tam Ekran</button>
+            <button id="fullscreen-btn"><img src="fullscreen-icon.png" alt="Tam Ekran" /></button>
+            <button id="exit-fullscreen-btn" style="display:none;">Tam Ekrandan Çık</button>
         </div>
 
-        <!-- Sayfa Navigasyonu -->
-        <div id="navigation" style="display: none;">
-            <button id="prev-page">&#8592;</button>
+        <!-- Sayfa Navigasyonu ve Beyaz Alt Şerit -->
+        <div id="navigation">
+            <button id="prev-page" class="nav-btn">&#x2190;</button>
             <span id="page-num-display">Sayfa: <span id="page-num"></span> / <span id="page-count"></span></span>
-            <button id="next-page">&#8594;</button>
+            <button id="next-page" class="nav-btn">&#x2192;</button>
+        </div>
+
+        <!-- Kalem, Silgi ve Kontroller -->
+        <div id="controls">
+            <button id="pen-btn">Kalem</button>
+            <button id="eraser-btn">Silgi</button>
         </div>
     </div>
 
