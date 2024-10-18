@@ -1,9 +1,36 @@
-<input type="file" id="file-input" accept="application/pdf" />
-<div id="pdf-container">
-    <canvas id="pdf-render"></canvas>
-</div>
-<div class="toolbar">
-    <button id="prev-page">Önceki Sayfa</button>
-    <button id="next-page">Sonraki Sayfa</button>
-    <span>Sayfa: <span id="page-num"></span> / <span id="page-count"></span></span>
-</div>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitap Formatında PDF Görüntüleyici</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+</head>
+<body>
+    <div id="pdf-app">
+        <!-- Dosya Yükleme Butonu -->
+        <div id="upload-section">
+            <button id="upload-btn">+</button>
+            <label for="file-input" id="upload-label">Dosya Seç</label>
+            <input type="file" id="file-input" accept="application/pdf" style="display: none;" />
+            <p id="loading-message" style="display: none;">Yükleniyor...</p>
+        </div>
+
+        <!-- PDF ve Tam Ekran Butonu -->
+        <div id="pdf-container" style="display: none;">
+            <canvas id="pdf-render"></canvas>
+            <button id="fullscreen-btn">Tam Ekran</button>
+        </div>
+
+        <!-- Sayfa Navigasyonu -->
+        <div id="navigation" style="display: none;">
+            <button id="prev-page">&#8592;</button>
+            <span id="page-num-display">Sayfa: <span id="page-num"></span> / <span id="page-count"></span></span>
+            <button id="next-page">&#8594;</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
