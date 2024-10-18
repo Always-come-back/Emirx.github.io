@@ -14,36 +14,90 @@ const scale = 1.5,
       fileSizeMessage = document.getElementById('file-size-message'),
       fileSizeSpan = document.getElementById('file-size'),
       pdfContainer = document.getElementById('pdf-container'),
-      fullscreenBtn = document.getElementById('fullscreen-btn'),
-      exitFullscreenBtn = document.getElementById('exit-fullscreen-btn'),
-      navigation = document.getElementById('navigation');
+      loadingOverlay = document.getElementById('loading-overlay'),
+      navigation = document.getElementById('navigation'),
+      controls = document.getElementById('controls');
 
-// Tam ekran modunu kontrol et
-fullscreenBtn.addEventListener('click', () => {
-    if (pdfContainer.requestFullscreen) {
-        pdfContainer.requestFullscreen();
-        fullscreenBtn.style.display = 'none';
-        exitFullscreenBtn.style.display = 'block';
-    } else if (pdfContainer.webkitRequestFullscreen) {
-        pdfContainer.webkitRequestFullscreen(); // Safari
-        fullscreenBtn.style.display = 'none';
-        exitFullscreenBtn.style.display = 'block';
+// Dosya yükleme işlemi
+fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file.type !== 'application/pdf') {
+        alert('Lütfen geçerli bir PDF dosyası seçin.');
+        return;
     }
+
+    // Yükleme yüzdesi ve dosya boyutunu göster
+    fileSizeSpan.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
+    fileSizeMessage.style.display = 'block';
+
+    // Yükleme animasyonu başlat
+    loadingOverlay.style.display = 'flex';
+    loadingMessage.style.display = 'block';
+
+    const fileReader = new FileReader();
+    fileReader.onload = function () {
+        const typedarray = new Uint8Array(this.result);
+        pdfjsLib.getDocument(typedarray).promise.then(pdf => {
+            pdfDoc = pdf;
+            document.getElementById('page-count').textContent = pdf.numPages;
+            renderPage(pageNum);
+            loadingOverlay.style.display = 'none';
+            navigation.style.display = 'block';
+            controls.style.display = 'block';
+        });
+    };
+
+    // Yükleme işlemi
+    fileReader.onprogress = function (progress) {
+        if (progress.lengthComputable) {
+            const percent = (progress.loaded / progress.total) * 100;
+            progressPercent.textContent = `${percent.toFixed(0)}%`;
+            progressMessage.style.display = 'block';
+        }
+    };
+
+    fileReader.readAsArrayBuffer(file);
 });
 
-exitFullscreenBtn.addEventListener('click', () => {
-    if (document.exitFullscreen) {
-        document.exitFullscreen();
-        exitFullscreenBtn.style.display = 'none';
-        fullscreenBtn.style.display = 'block';
+// Sayfa render işlemi
+function renderPage(num) {
+    pageIsRendering = true;
+    pdfDoc.getPage(num).then(page => {
+        const viewport = page.getViewport({ scale });
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        const renderContext = {
+            canvasContext: ctx,
+            viewport: viewport
+        };
+
+        page.render(renderContext).promise.then(() => {
+            pageIsRendering = false;
+
+            if (pageNumIsPending !== null) {
+                renderPage(pageNumIsPending);
+                pageNumIsPending = null;
+            }
+        });
+    });
+
+    document.getElementById('page-num').textContent = num;
+}
+
+// Önceki ve sonraki sayfa butonları
+document.getElementById('prev-page').addEventListener('click', () => {
+    if (pageNum <= 1) {
+        return;
     }
+    pageNum--;
+    renderPage(pageNum);
 });
 
-document.addEventListener('fullscreenchange', () => {
-    if (!document.fullscreenElement) {
-        exitFullscreenBtn.style.display = 'none';
-        fullscreenBtn.style.display = 'block';
+document.getElementById('next-page').addEventListener('click', () => {
+    if (pageNum >= pdfDoc.numPages) {
+        return;
     }
+    pageNum++;
+    renderPage(pageNum);
 });
-
-// Diğer özellikler...
