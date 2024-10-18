@@ -17,26 +17,30 @@
             <p id="loading-message" style="display: none;">Yükleniyor...</p>
             <p id="progress-message" style="display: none;">Yükleme Yüzdesi: <span id="progress-percent">0%</span></p>
             <p id="file-size-message" style="display: none;">Dosya Boyutu: <span id="file-size"></span></p>
+            <div id="loading-overlay" style="display: none;">
+                <div class="loader"></div>
+            </div>
         </div>
 
-        <!-- PDF ve Tam Ekran Butonu -->
+        <!-- PDF Görüntüleme Alanı -->
         <div id="pdf-container" style="display: none;">
             <canvas id="pdf-render"></canvas>
             <button id="fullscreen-btn"><img src="fullscreen-icon.png" alt="Tam Ekran" /></button>
             <button id="exit-fullscreen-btn" style="display:none;">Tam Ekrandan Çık</button>
         </div>
 
-        <!-- Sayfa Navigasyonu ve Beyaz Alt Şerit -->
-        <div id="navigation">
+        <!-- Alt Navigasyon (Başlangıçta gizli) -->
+        <div id="navigation" style="display: none;">
             <button id="prev-page" class="nav-btn">&#x2190;</button>
             <span id="page-num-display">Sayfa: <span id="page-num"></span> / <span id="page-count"></span></span>
             <button id="next-page" class="nav-btn">&#x2192;</button>
         </div>
 
-        <!-- Kalem, Silgi ve Kontroller -->
-        <div id="controls">
-            <button id="pen-btn">Kalem</button>
-            <button id="eraser-btn">Silgi</button>
+        <!-- Kontroller -->
+        <div id="controls" style="display: none;">
+            <button id="pen-btn"><img src="pen-icon.png" alt="Kalem" /></button>
+            <button id="eraser-btn"><img src="eraser-icon.png" alt="Silgi" /></button>
+            <button id="fullscreen-btn"><img src="fullscreen-icon.png" alt="Tam Ekran" /></button>
         </div>
     </div>
 
